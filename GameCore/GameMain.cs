@@ -17,7 +17,8 @@ public class GameMain : Game
         gdm.PreferredBackBufferWidth = 512;
         gdm.PreferredBackBufferHeight = 512;
         gdm.IsFullScreen = false;
-        gdm.SynchronizeWithVerticalRetrace = true;
+        // Turn off VSync
+        gdm.SynchronizeWithVerticalRetrace = false;
 
         // All content loaded will be in a "Content" folder
         Content.RootDirectory = "Content";
@@ -35,6 +36,8 @@ public class GameMain : Game
     private Song song;
     private FontSystem _fontSystem;
     private FrameCounter _frameCounter = new FrameCounter();
+    private Vector2 playerPosition = new Vector2(100, 100);
+    private const float PLAYER_SPEED = 100.0f;
     
     protected override void Initialize()
     {
@@ -87,13 +90,27 @@ public class GameMain : Game
             sound.Play();
         }
 
-        // loop colors
-        r++;
-        if (r == 255) { r = 0;}
-        g++;
-        if (g == 255) { g = 0;}
-        b++;
-        if (b == 255) { b = 0;}
+        Vector2 inputDirection = Vector2.Zero;
+        if (keyboardState.IsKeyDown(Keys.W))
+        {
+            inputDirection.Y += -1;
+        }
+        if (keyboardState.IsKeyDown(Keys.S))
+        {
+            inputDirection.Y += 1;
+        }
+        if (keyboardState.IsKeyDown(Keys.A))
+        {
+            inputDirection.X += -1;
+        }
+        if (keyboardState.IsKeyDown(Keys.D))
+        {
+            inputDirection.X += 1;
+        }
+        if (inputDirection != Vector2.Zero)
+            inputDirection.Normalize();
+        
+        playerPosition += inputDirection * (float)gameTime.ElapsedGameTime.TotalSeconds * PLAYER_SPEED;
         
         // music 
         // Just keep playing the song over and over
@@ -109,14 +126,14 @@ public class GameMain : Game
         GraphicsDevice.Clear(new Color(r, g, b));
          // Draw the texture to the corner of the screen
         batch.Begin();
-        batch.Draw(texture, new Rectangle(100, 100, texture.Width / 5, texture.Height / 5), Color.White);
+        batch.Draw(texture, new Rectangle((int)playerPosition.X, (int)playerPosition.Y, texture.Width / 5, texture.Height / 5), Color.White);
         SpriteFontBase font18 = _fontSystem.GetFont(18);
         var deltaTime = (float)gameTime.ElapsedGameTime.TotalSeconds;
         _frameCounter.Update(deltaTime);
 
         var fpsString = $"FPS: {_frameCounter.AverageFramesPerSecond}";
 
-        batch.DrawString(font18, fpsString, new Vector2(1, 1), Color.Black);
+        batch.DrawString(font18, fpsString, new Vector2(1, 1), Color.White);
         SpriteFontBase font30 = _fontSystem.GetFont(30);
         batch.DrawString(font30, "The quick brown fox\njumps over\nthe lazy dog", new Vector2(0, 80), Color.Yellow);
 

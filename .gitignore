@@ -9,6 +9,7 @@
 
 # Dependency directories
 /FontStashSharp
+/Monogame-Extended
 
 # dotenv files
 .env

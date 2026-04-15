@@ -25,6 +25,7 @@
     <!-- This lets the dependencies know which variant of FNA to use at compile time -->
     <ItemGroup>
       <ProjectReference Include="..\FontStashSharp\src\XNA\FontStashSharp.FNA.Core.csproj" Properties="FNAVariant=$(FNAVariant)" />
+      <ProjectReference Include="..\Monogame-Extended\source\MonoGame.Extended\FNA.Extended.csproj" Properties="FNAVariant=$(FNAVariant)" />
     </ItemGroup>
     
     

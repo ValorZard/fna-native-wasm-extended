@@ -27,6 +27,7 @@ if (doClean)
     ForceDeleteDirectory("FNANative");
     ForceDeleteDirectory("FNAWasm");
     ForceDeleteDirectory("FontStashSharp");
+    ForceDeleteDirectory("Monogame-Extended");
     Console.WriteLine("Finished cleaning up");
 }
 
@@ -83,3 +84,29 @@ var fontStashPatch = new Process
 fontStashPatch.Start();
 fontStashPatch.WaitForExit();
 Console.WriteLine("Finished applying FontStashSharp patches");
+
+Console.WriteLine("Downloading Monogame-Extended...");
+var extendedClone = new Process
+{
+    StartInfo = new ProcessStartInfo
+    {
+        FileName = "git",
+        Arguments = "clone https://github.com/MonoGame-Extended/Monogame-Extended.git --single-branch --depth 1 --recursive --revision b39c45af760806b9c428de3bd48ab64a29699cbf",
+    }
+};
+extendedClone.Start();
+extendedClone.WaitForExit();
+Console.WriteLine("Finished downloading Monogame-Extended");
+Console.WriteLine("Now applying Monogame-Extended patches...");
+var extendedPatch = new Process
+{
+    StartInfo = new ProcessStartInfo
+    {
+        FileName = "git",
+        Arguments = "apply ../Monogame-Extended.patch",
+        WorkingDirectory = "Monogame-Extended",
+    }
+};
+extendedPatch.Start();
+extendedPatch.WaitForExit();
+Console.WriteLine("Finished applying Monogame-Extended patches");

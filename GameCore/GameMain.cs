@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
+using MonoGame.Extended.Input;
 
 namespace GameCore;
 using Microsoft.Xna.Framework;
@@ -31,7 +32,6 @@ public class GameMain : Game
     
     private Texture2D texture;
     private SoundEffect sound;
-    private KeyboardState keyboardPrev = new KeyboardState();
     private Song song;
     private FontSystem _fontSystem;
     private FrameCounter _frameCounter = new FrameCounter();
@@ -79,14 +79,13 @@ public class GameMain : Game
             lastUpdate = now;
             updateCount = 0;
         }
-        KeyboardState keyboardCur = Keyboard.GetState();
-
-        if (keyboardCur.IsKeyDown(Keys.Space) && keyboardPrev.IsKeyUp(Keys.Space))
+        KeyboardExtended.Update();
+        KeyboardStateExtended keyboardState = KeyboardExtended.GetState();
+        
+        if(keyboardState.WasKeyPressed(Keys.Space))
         {
             sound.Play();
         }
-
-        keyboardPrev = keyboardCur;
 
         // loop colors
         r++;
@@ -102,7 +101,6 @@ public class GameMain : Game
         {
             MediaPlayer.Play(song);
         }
-        
     }
 
     protected override void Draw(GameTime gameTime)

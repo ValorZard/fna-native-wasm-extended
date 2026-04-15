@@ -9,4 +9,5 @@
   </Folder>
   <Project Path="FontStashSharp/src/XNA/FontStashSharp.FNA.Core.csproj" />
   <Project Path="GameCore/GameCore.csproj" />
+  <Project Path="Monogame-Extended/source/MonoGame.Extended/FNA.Extended.csproj" />
 </Solution>
